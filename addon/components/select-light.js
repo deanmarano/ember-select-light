@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
 import { isNone } from '@ember/utils';
+import { get } from '@ember/object';
 import { deprecate } from '@ember/debug';
 
 const noop = () => {};
@@ -24,8 +25,8 @@ export default class extends Component {
 
   get hasDetailedOptions() {
     return ![ // Returns a boolean if all data is available for a { label: foo, value: bar } style list of options
-      this.args.options?.[0][this.valueKey],
-      this.args.options?.[0][this.displayKey],
+      this.args.options && get(this.args.options[0], this.valueKey),
+      this.args.options && get(this.args.options[0], this.displayKey),
     ].some(isNone);
   }
 }

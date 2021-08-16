@@ -161,6 +161,29 @@ module('Integration | Component | select-light', function(hooks) {
 		assert.dom('select option').includesText(options[0].description);
 	});
 
+	test('should render options with customized value and display keys when passed ember get keys', async function(assert) {
+		let options = [
+			{ val: {id:'shortfin'}, description: 'Shortfin Shark' },
+			{ val: {id:'mako'}, description: 'Mako Shark' },
+		];
+		let value = options[1].val;
+		this.setProperties({
+			options,
+			value: value.id,
+		});
+
+		await render(hbs`
+      <SelectLight
+        @options={{this.options}}
+        @value={{this.value}}
+        @valueKey="val.id"
+        @displayKey="description" />
+    `);
+
+		assert.dom('select option').hasAttribute('value', options[0].val.id);
+		assert.dom('select option').includesText(options[0].description);
+	});
+
 	test('should render options correctly when value is an empty string', async function(assert) {
 		let options = [
 			{ value: '', label: 'None' },
